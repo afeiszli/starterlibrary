@@ -12,8 +12,8 @@
 #################################################################
 
 provider "aws" {
-  version = "~> 2.0"
-  region  = "${var.aws_region}"
+  version = "~> 3.0"
+  region  = "eu-west-2"
 }
 
 module "camtags" {
@@ -22,7 +22,7 @@ module "camtags" {
 
 variable "aws_region" {
   description = "AWS region to launch servers."
-  default     = "us-east-1"
+  default     = "eu-west-2"
 }
 
 variable "vpc_name_tag" {
@@ -35,23 +35,25 @@ variable "subnet_name" {
 
 variable "aws_image_size" {
   description = "AWS Image Instance Size"
-  default     = "t2.small"
+  default     = "t2.micro"
 }
 
 data "aws_vpc" "selected" {
-  state = "available"
-
   filter {
     name   = "tag:Name"
-    values = ["${var.vpc_name_tag}"]
+    values = [var.vpc_name_tag]
   }
 }
 
+# data "aws_subnet" "selected" {
+#   filter {
+#     name   = "tag:Name"
+#     values = [var.subnet_name]
+#   }
+# }
+	
 data "aws_subnet" "selected" {
-  filter {
-    name   = "tag:Name"
-    values = ["${var.subnet_name}"]
-  }
+  id = var.subnet_name
 }
 
 variable "public_ssh_key_name" {
@@ -64,7 +66,7 @@ variable "public_ssh_key" {
 
 #Variable : AWS image name
 variable "aws_image" {
-  type        = "string"
+  type        = string
   description = "Operating system image id / template that should be used when creating the virtual image"
   default     = "ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"
 }
@@ -76,7 +78,7 @@ variable "aws_ami_owner_id" {
 
 #Stack name (CAM instance name) to be used as AWS name.
 variable "ibm_stack_name" {
-	type = "string"
+	type = string
 	default = "awssinglevm"
 }
 
@@ -86,23 +88,23 @@ data "aws_ami" "aws_ami" {
 
   filter {
     name   = "name"
-    values = ["${var.aws_image}*"]
+    values = [var.aws_image]
   }
 
-  owners = ["${var.aws_ami_owner_id}"]
+  owners = [var.aws_ami_owner_id]
 }
 
 resource "aws_key_pair" "orpheus_public_key" {
-  key_name   = "${var.public_ssh_key_name}"
-  public_key = "${var.public_ssh_key}"
+  key_name   = var.public_ssh_key_name
+  public_key = var.public_ssh_key
 }
 
 resource "aws_instance" "orpheus_ubuntu_micro" {
-  instance_type = "${var.aws_image_size}"
-  ami           = "${data.aws_ami.aws_ami.id}"
-  subnet_id     = "${data.aws_subnet.selected.id}"
-  key_name      = "${aws_key_pair.orpheus_public_key.id}"
-  tags          = "${merge(module.camtags.tagsmap, map("Name", "${var.ibm_stack_name}"))}"
+  instance_type = var.aws_image_size
+  ami           = data.aws_ami.aws_ami.id
+  subnet_id     = data.aws_subnet.selected.id
+  key_name      = aws_key_pair.orpheus_public_key.id
+  tags          = "${merge(module.camtags.tagsmap, map("Name", var.ibm_stack_name))}"
 }
 
 output "ip_address" {
