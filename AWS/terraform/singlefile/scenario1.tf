@@ -107,6 +107,12 @@ resource "aws_instance" "orpheus_ubuntu_micro" {
   tags          = "${merge(module.camtags.tagsmap, map("Name", var.ibm_stack_name))}"
 }
 
+resource "aws_eip" "orpheus_ubuntu_micro" {
+  vpc      = true
+  instance = aws_instance.orpheus_ubuntu_micro.id
+}
+	
 output "ip_address" {
+  value = aws_eip.orpheus_ubuntu_micro.instance	
   value = "${length(aws_instance.orpheus_ubuntu_micro.public_ip) > 0 ? aws_instance.orpheus_ubuntu_micro.public_ip : aws_instance.orpheus_ubuntu_micro.private_ip}"
 }
