@@ -13,7 +13,7 @@
 
 provider "aws" {
   version = "~> 3.0"
-  region  = "eu-west-2"
+  region = var.aws_region	
 }
 
 module "camtags" {
