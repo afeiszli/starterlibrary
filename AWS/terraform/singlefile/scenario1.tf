@@ -67,9 +67,14 @@ resource "aws_instance" "cam_instance" {
   key_name      = aws_key_pair.generated_key.id
   tags          = "${merge(module.camtags.tagsmap, map("Name", var.ibm_stack_name))}"  
 }
-  
 output "ip_address" {
   value = aws_instance.cam_instance.public_ip
+
+resource "aws_eip" "orpheus_ubuntu_micro" {
+  vpc      = true
+  instance = aws_instance.orpheus_ubuntu_micro.id
+}
+	
 }
 
 output "private_key" {
