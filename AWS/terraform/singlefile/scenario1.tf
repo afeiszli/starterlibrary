@@ -76,3 +76,7 @@ output "private_key" {
    description           = "The private key of the main server instance."
    sensitive             = true
  }
+
+output "size" {
+  value = var.size
+}
