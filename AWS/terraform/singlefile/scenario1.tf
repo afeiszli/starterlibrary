@@ -11,8 +11,12 @@
 #
 #################################################################
 
+variable "public_ssh_key_name" {
+  description = "Name of the public SSH key used to connect to the virtual guest"
+}
+
 provider "aws" {
-  version = "~> 3.0"
+  version = "~> 3.12.0"
   region = var.aws_region	
 }
 
@@ -25,88 +29,51 @@ variable "aws_region" {
   default     = "eu-west-2"
 }
 
-variable "vpc_name_tag" {
-  description = "Name of the Virtual Private Cloud (VPC) this resource is going to be deployed into"
+variable "aws_instance_size" {
+  description = "AWS Instance Size"
+  default     = "t2.micro"
+}
+
+# Amazon Machine Image (AMI) name
+variable "aws_image" {
+  type        = string
+  description = "AMI to be used when creating EC2 instance"
 }
 
 variable "subnet_name" {
   description = "Subnet Name"
 }
 
-variable "aws_image_size" {
-  description = "AWS Image Instance Size"
-  default     = "t2.micro"
-}
-
-data "aws_vpc" "selected" {
-  filter {
-    name   = "tag:Name"
-    values = [var.vpc_name_tag]
-  }
-}
-
-# data "aws_subnet" "selected" {
-#   filter {
-#     name   = "tag:Name"
-#     values = [var.subnet_name]
-#   }
-# }
-	
-data "aws_subnet" "selected" {
-  id = var.subnet_name
-}
-
-variable "public_ssh_key_name" {
-  description = "Name of the public SSH key used to connect to the virtual guest"
-}
-
-variable "public_ssh_key" {
-  description = "Public SSH key used to connect to the virtual guest"
-}
-
-#Variable : AWS image name
-variable "aws_image" {
-  type        = string
-  description = "Operating system image id / template that should be used when creating the virtual image"
-  default     = "ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"
-}
-
-variable "aws_ami_owner_id" {
-  description = "AWS AMI Owner ID"
-  default     = "099720109477"
-}
-
-#Stack name (CAM instance name) to be used as AWS name.
+# Stack name (CAM instance name) to be used as EC2 instance name
 variable "ibm_stack_name" {
-	type = string
-	default = "awssinglevm"
+  type = string
+  default = "AWS-Single-VM"
 }
 
-# Lookup for AMI based on image name and owner ID
-data "aws_ami" "aws_ami" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = [var.aws_image]
-  }
-
-  owners = [var.aws_ami_owner_id]
+resource "tls_private_key" "ansibleKey" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
 }
 
-resource "aws_key_pair" "orpheus_public_key" {
+resource "aws_key_pair" "generated_key" {
   key_name   = var.public_ssh_key_name
-  public_key = var.public_ssh_key
+  public_key = "${tls_private_key.ansibleKey.public_key_openssh}"
 }
-
-resource "aws_instance" "orpheus_ubuntu_micro" {
-  instance_type = var.aws_image_size
-  ami           = data.aws_ami.aws_ami.id
-  subnet_id     = data.aws_subnet.selected.id
-  key_name      = aws_key_pair.orpheus_public_key.id
-  tags          = "${merge(module.camtags.tagsmap, map("Name", var.ibm_stack_name))}"
+  
+resource "aws_instance" "cam_instance" {
+  instance_type = var.aws_instance_size
+  ami           = var.aws_image
+  subnet_id     = var.subnet_name
+  key_name      = aws_key_pair.generated_key.id
+  tags          = "${merge(module.camtags.tagsmap, map("Name", var.ibm_stack_name))}"  
 }
-
+  
 output "ip_address" {
-  value = "${length(aws_instance.orpheus_ubuntu_micro.public_ip) > 0 ? aws_instance.orpheus_ubuntu_micro.public_ip : aws_instance.orpheus_ubuntu_micro.private_ip}"
+  value = aws_instance.cam_instance.public_ip
 }
+
+output "private_key" {
+   value                 = "${tls_private_key.ansibleKey.private_key_pem}"
+   description           = "The private key of the main server instance."
+   sensitive             = true
+ }

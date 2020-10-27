@@ -1,6 +1,6 @@
  {
     "name": "Amazon EC2 Virtual Server with SSH key",
-    "description": "Amazon EC2 Ubuntu 14.04 virtual server under an existing Virtual Private Cloud (VPC).",
+    "description": "Amazon EC2 Instance in default VPC.",
     "version": "1.0",
     "imageUrl": "./assets/svg/IBM_WebSphere_Standalone.svg",
     "image": "tp_WAS_standalone.png",
@@ -25,7 +25,7 @@
     "metadata": {
       "displayName": "Amazon EC2 Virtual Server with SSH Key - HCL",
       "providerDisplayName": "IBM",
-      "longDescription": "Use this cloud resource template to quickly provision a Ubuntu 14.04 64 bit virtual server with ssh key into an existing Virtual Private Cloud (VPC) and on an existing network.",
+      "longDescription": "Use this cloud resource template to quickly provision a EC2 instance in your default VPC. ",
       "bullets": [
        {
          "title": "Clouds",
@@ -33,7 +33,7 @@
        },
        {
          "title": "Operating systems supported",
-         "description": "AWS: Ubuntu 14.04 LTS"
+         "description": "AWS: Amazon Linux 2"
        },
        {
          "title": "Topology",
