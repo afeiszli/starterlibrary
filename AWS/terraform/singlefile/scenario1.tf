@@ -70,13 +70,6 @@ resource "aws_instance" "cam_instance" {
 output "ip_address" {
   value = aws_instance.cam_instance.public_ip
 
-resource "aws_eip" "orpheus_ubuntu_micro" {
-  vpc      = true
-  instance = aws_instance.orpheus_ubuntu_micro.id
-}
-	
-}
-
 output "private_key" {
    value                 = "${tls_private_key.ansibleKey.private_key_pem}"
    description           = "The private key of the main server instance."
