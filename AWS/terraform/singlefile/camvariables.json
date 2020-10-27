@@ -67,7 +67,18 @@
 			"secured": false,
 			"required": true,
 			"immutable": false
-		}, {
+		}, 
+		 {
+			"name": "size",
+			"type": "string",
+			"description": "Size of EC2 Instance to Deploy",
+			"hidden": false,
+			"label": "VM Size",
+			"secured": false,
+			"required": true,
+			"immutable": false
+		}, 
+		{
 			"name": "aws_instance_size",
 			"type": "string",
 			"description": "Size of EC2 instance to be created",
@@ -111,6 +122,13 @@
 		  "hidden": false,
 		  "label": "Private key",
 		  "secured": true
-		}
+		},
+	  {
+		  "name": "size",
+		  "type": "string",
+		  "hidden": false,
+		  "label": "VM Size",
+		  "secured": false
+		}		
 	]
 }
