@@ -15,6 +15,11 @@ variable "public_ssh_key_name" {
   description = "Name of the public SSH key used to connect to the virtual guest"
 }
 
+variable "size" {
+  description = "Size of the VM to deploy."
+  default = "small"
+}
+
 provider "aws" {
   version = "~> 3.12.0"
   region = var.aws_region	
