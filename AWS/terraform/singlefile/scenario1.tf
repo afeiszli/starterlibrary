@@ -69,7 +69,8 @@ resource "aws_instance" "cam_instance" {
 }
 output "ip_address" {
   value = aws_instance.cam_instance.public_ip
-
+}
+  
 output "private_key" {
    value                 = "${tls_private_key.ansibleKey.private_key_pem}"
    description           = "The private key of the main server instance."
