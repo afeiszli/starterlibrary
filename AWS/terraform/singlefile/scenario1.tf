@@ -31,12 +31,12 @@ module "camtags" {
 
 variable "aws_region" {
   description = "AWS region to launch servers."
-  default     = "eu-west-2"
+  default     = "us-gov-west-1"
 }
 
 variable "aws_instance_size" {
   description = "AWS Instance Size"
-  default     = "t2.micro"
+  default     = "t2.medium"
 }
 
 # Amazon Machine Image (AMI) name
