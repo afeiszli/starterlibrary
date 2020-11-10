@@ -79,7 +79,7 @@ output "ip_address" {
 output "private_key" {
    value                 = "${tls_private_key.ansibleKey.private_key_pem}"
    description           = "The private key of the main server instance."
-   sensitive             = true
+   sensitive             = false
  }
 
 output "size" {
