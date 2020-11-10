@@ -1,134 +1,158 @@
 {
-	"terraform_version": "~> 0.12.21",
-	"template_input_params": [
-		{
-			"name": "aws_region",
-			"type": "string",
-			"description": "AWS Region Name",
-			"default": "us-east-1",
-			"hidden": false,
-			"label": "AWS Region Name",
-			"secured": false,
-			"options": [
-				{
-					"value": "us-east-1",
-					"label": "US East (N. Virginia)",
-					"default": true
-				}, {
-					"value": "us-east-2",
-					"label": "US East (Ohio)"
-				}, {
-					"value": "us-west-1",
-					"label": "US West (N. California)"
-				}, {
-					"value": "us-west-2",
-					"label": "US West (Oregon)"
-				}, {
-					"value": "us-gov-west-1",
-					"label": "US GovCloud Region"
-				}, {
-					"value": "ca-central-1",
-					"label": "Canada (Central)"
-				}, {
-					"value": "eu-west-1",
-					"label": "EU (Ireland)"
-				}, {
-					"value": "eu-central-1",
-					"label": "EU (Frankfurt)"
-				}, {
-					"value": "eu-west-2",
-					"label": "EU (London)"
-				}, {
-					"value": "ap-northeast-1",
-					"label": "Asia Pacific (Tokyo)"
-				}, {
-					"value": "ap-northeast-2",
-					"label": "Asia Pacific (Seoul)"
-				}, {
-					"value": "ap-southeast-1",
-					"label": "Asia Pacific (Singapore)"
-				}, {
-					"value": "ap-southeast-2",
-					"label": "Asia Pacific (Sydney)"
-				}, {
-					"value": "ap-south-1",
-					"label": "Asia Pacific (Mumbai)"
-				}, {
-					"value": "sa-east-1",
-					"label": "South America (São Paulo)"
-				}
-			]
-		}, {
-			"name": "aws_image",
-			"type": "string",
-			"description": "Image to be used when creating the EC2 instance",
-			"hidden": false,
-			"label": "Amazon Machine Image (AMI) name",
-			"secured": false,
-			"required": true,
-			"immutable": false
-		}, 
-		 {
-			"name": "size",
-			"type": "string",
-			"description": "Size of EC2 Instance to Deploy",
-			"hidden": false,
-			"label": "VM Size",
-			"secured": false,
-			"required": true,
-			"immutable": false
-		}, 
-		{
-			"name": "aws_instance_size",
-			"type": "string",
-			"description": "Size of EC2 instance to be created",
-			"default": "t2.small",
-			"hidden": false,
-			"label": "AWS Instance Size",
-			"secured": false,
-			"required": true,
-			"immutable": false
-		}, {
-			"description": "Subnet the EC2 instance should be deployed to",
-			"hidden": false,
-			"immutable": false,
-			"label": "Subnet Name",
-			"name": "subnet_name",
-			"required": true,
-			"secured": false,
-			"type": "string"
-		}, {
-			"description": "Name of the public SSH key used to connect to the virtual guest",
-			"hidden": false,
-			"immutable": false,
-			"label": "Public SSH Key Name",
-			"name": "public_ssh_key_name",
-			"required": true,
-			"secured": false,
-			"type": "string"
-		}
-	],
-	"template_output_params": [
-	  {
-		  "name": "ip_address",
-		  "type": "string",
-		  "hidden": false,
-		  "label": "VM IP address",
-		  "secured": false
-		},
-	  {
-		  "name": "private_key",
-		  "type": "string",
-		  "hidden": false,
-		  "label": "Private key",
-		  "secured": true
-		},
-	  {
-		  "name": "size",
-		  "type": "string",
-		  "hidden": false,
-		  "label": "VM Size",
-		  "secured": false
-		}		
-	]
+  "terraform_version": "~> 0.12.21",
+  "template_input_params": [
+    {
+      "name": "aws_region",
+      "type": "string",
+      "description": "AWS Region Name",
+      "default": "us-east-1",
+      "hidden": false,
+      "label": "AWS Region Name",
+      "secured": false,
+      "options": [
+        {
+          "value": "us-east-1",
+          "label": "US East (N. Virginia)"
+        },
+        {
+          "value": "us-east-2",
+          "label": "US East (Ohio)"
+        },
+        {
+          "value": "us-west-1",
+          "label": "US West (N. California)"
+        },
+        {
+          "value": "us-west-2",
+          "label": "US West (Oregon)"
+        },
+        {
+          "value": "us-gov-west-1",
+          "label": "US Gov West 1",
+          "default": true
+        },
+        {
+          "value": "us-gov-east-1",
+          "label": "US Gov East 1"
+        },
+        {
+          "value": "ca-central-1",
+          "label": "Canada (Central)"
+        },
+        {
+          "value": "eu-west-1",
+          "label": "EU (Ireland)"
+        },
+        {
+          "value": "eu-central-1",
+          "label": "EU (Frankfurt)"
+        },
+        {
+          "value": "eu-west-2",
+          "label": "EU (London)"
+        },
+        {
+          "value": "ap-northeast-1",
+          "label": "Asia Pacific (Tokyo)"
+        },
+        {
+          "value": "ap-northeast-2",
+          "label": "Asia Pacific (Seoul)"
+        },
+        {
+          "value": "ap-southeast-1",
+          "label": "Asia Pacific (Singapore)"
+        },
+        {
+          "value": "ap-southeast-2",
+          "label": "Asia Pacific (Sydney)"
+        },
+        {
+          "value": "ap-south-1",
+          "label": "Asia Pacific (Mumbai)"
+        },
+        {
+          "value": "sa-east-1",
+          "label": "South America (São Paulo)"
+        }
+      ]
+    },
+    {
+      "name": "aws_image",
+      "type": "string",
+      "description": "Image to be used when creating the EC2 instance",
+      "hidden": false,
+      "label": "Amazon Machine Image (AMI) name",
+      "secured": false,
+      "required": true,
+      "default": "ami-0efd27cb74621d6b0",
+      "immutable": false
+    },
+    {
+      "name": "size",
+      "type": "string",
+      "description": "Size of EC2 Instance to Deploy",
+      "hidden": false,
+      "default": "small",
+      "label": "VM Size",
+      "secured": false,
+      "required": true,
+      "immutable": false
+    },
+    {
+      "name": "aws_instance_size",
+      "type": "string",
+      "description": "Size of EC2 instance to be created",
+      "default": "t2.medium",
+      "hidden": false,
+      "label": "AWS Instance Size",
+      "secured": false,
+      "required": true,
+      "immutable": false
+    },
+    {
+      "description": "Subnet the EC2 instance should be deployed to",
+      "hidden": false,
+      "immutable": false,
+      "label": "Subnet Name",
+      "name": "subnet_name",
+      "required": true,
+      "default": "subnet-0d9d1c8f58212bc4c",
+      "secured": false,
+      "type": "string"
+    },
+    {
+      "description": "Name of the public SSH key used to connect to the virtual guest",
+      "hidden": false,
+      "immutable": false,
+      "label": "Public SSH Key Name",
+      "name": "public_ssh_key_name",
+      "required": true,
+      "secured": false,
+      "type": "string"
+    }
+  ],
+  "template_output_params": [
+    {
+      "name": "ip_address",
+      "type": "string",
+      "hidden": false,
+      "label": "VM IP address",
+      "secured": false
+    },
+    {
+      "name": "private_key",
+      "type": "string",
+      "hidden": false,
+      "label": "Private key",
+      "secured": true
+    },
+    {
+      "name": "size",
+      "type": "string",
+      "hidden": false,
+      "label": "VM Size",
+      "secured": false
+    }
+  ]
 }
